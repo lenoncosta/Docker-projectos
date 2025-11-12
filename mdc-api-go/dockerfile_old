@@ -1,0 +1,14 @@
+# Imagem base
+FROM golang:latest
+
+# Diretório de trabalho
+WORKDIR /app
+
+# Copiar os arquivos para o diretório de trabalho
+COPY . .
+
+# Compilar o código
+RUN go build -o main .
+
+# Comando de execução
+CMD ["./main"]

@@ -1,0 +1,21 @@
+# Primeira etapa: compilação do código
+FROM golang:latest AS build
+
+WORKDIR /app
+
+# Copiar os arquivos necessários
+COPY . .
+
+# Compilar o código
+RUN go mod download
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main .
+
+# Segunda etapa: imagem final mínima
+FROM alpine:latest
+WORKDIR /app
+
+# Copiar o binário compilado da etapa anterior
+COPY --from=build /app/main .
+
+# Comando de execução
+CMD ["./main"]
